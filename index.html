@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuộc Thi Trực Tuyến Tiếng Anh & Hội Nhập Quốc Tế - THPT 2026</title>
+  <link rel="icon" type="image/png" href="logo-doan.png">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            doan: {
+              red: '#dc2626',
+              blue: '#0055b7',
+              green: '#059669',
+              gold: '#d97706',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-200">
+
+  <!-- TOP HEADER / NAVBAR -->
+  <header class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-lg sticky top-0 z-40 border-b border-blue-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center space-x-3.5 cursor-pointer" onclick="app.navigate('home')">
+          <img src="logo-doan.png" alt="Huy hiệu Đoàn TNCS Hồ Chí Minh" class="w-10 h-12 sm:w-12 sm:h-14 object-contain filter drop-shadow">
+          <div>
+            <div class="text-[10px] sm:text-xs font-semibold tracking-wider text-amber-300 uppercase">Đoàn TNCS Hồ Chí Minh Xã Mường Lầm</div>
+            <h1 class="text-sm sm:text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
+              <span>GLOBAL YOUTH CONTEST 2026</span>
+              <span class="hidden md:inline-block text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/30">Hội Nhập Quốc Tế</span>
+            </h1>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex items-center space-x-1 sm:space-x-3">
+          <button id="nav-btn-home" onclick="app.navigate('home')" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5 text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span class="hidden sm:inline">Trang Chủ</span>
+          </button>
+          
+          <button id="nav-btn-exam" onclick="app.startExamFlow()" class="nav-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center gap-1.5 transform hover:scale-105 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+            <span>Vào Thi Ngay</span>
+          </button>
+
+          <button id="nav-btn-admin" onclick="app.navigate('admin')" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5 text-blue-200 hover:text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            <span>Quản Trị BTC</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-root" class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ==================== VIEW 1: HOME & REGISTRATION ==================== -->
+    <section id="view-home" class="space-y-8 animate-fadeIn">
+      
+      <!-- HERO BANNER -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-blue-800/40">
+        <!-- Decorative background elements -->
+        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute right-1/4 top-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div class="max-w-2xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-semibold">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              Cuộc thi trực tuyến cấp THPT năm học 2026
+            </div>
+            
+            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white">
+              Tuổi Trẻ Học Đường <br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400">Tiếng Anh & Tự Hào Hội Nhập</span>
+            </h2>
+            
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Sân chơi học thuật và trải nghiệm quốc tế dành cho đoàn viên, học sinh các trường THPT. Nâng cao năng lực tiếng Anh giao tiếp chuẩn A1–A2, hiểu biết sâu sắc về cộng đồng ASEAN, bản sắc văn hóa Việt Nam và kỹ năng công dân số thời đại mới.
+            </p>
+
+            <!-- Highlights Pills -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/10 text-center">
+                <div class="text-amber-400 font-bold text-lg sm:text-xl">20 Câu</div>
+                <div class="text-[11px] sm:text-xs text-slate-300">Ngẫu nhiên từ ngân hàng</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/10 text-center">
+                <div class="text-amber-400 font-bold text-lg sm:text-xl">15 Phút</div>
+                <div class="text-[11px] sm:text-xs text-slate-300">Đếm ngược tự động</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/10 text-center">
+                <div class="text-amber-400 font-bold text-lg sm:text-xl">100 Điểm</div>
+                <div class="text-[11px] sm:text-xs text-slate-300">Thang điểm chuẩn</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/10 text-center">
+                <div class="text-emerald-400 font-bold text-lg sm:text-xl">E-Certificate</div>
+                <div class="text-[11px] sm:text-xs text-slate-300">Tải chứng nhận tức thì</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Official Logo Badge -->
+          <div class="hidden lg:flex flex-col items-center justify-center p-5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl flex-shrink-0 text-center hover:bg-white/15 transition-all">
+            <img src="logo-doan.png" alt="Huy hiệu Đoàn TNCS Hồ Chí Minh" class="w-32 h-36 object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+            <div class="text-xs font-bold text-amber-300 mt-2.5 tracking-wider uppercase">Đoàn TNCS Hồ Chí Minh Xã Mường Lầm</div>
+            <div class="text-[10px] text-slate-300">Đơn vị chủ trì & Ban Tổ Chức</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT: 2 COLUMNS (REGISTRATION FORM & LEADERBOARD) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- REGISTRATION CARD (LEFT COLUMN - 7 COLS) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-8">
+          <div class="flex items-center gap-3.5 pb-5 border-b border-slate-100">
+            <img src="logo-doan.png" alt="Huy hiệu Đoàn" class="w-11 h-12 object-contain drop-shadow flex-shrink-0">
+            <div>
+              <h3 class="text-xl font-bold text-slate-800">Đăng Ký Vào Phòng Thi</h3>
+              <p class="text-xs sm:text-sm text-slate-500">Điền thông tin chính xác để in lên Giấy chứng nhận điện tử (E-Certificate)</p>
+            </div>
+          </div>
+
+          <form id="form-register" onsubmit="app.handleRegisterSubmit(event)" class="mt-6 space-y-5">
+            <!-- Chọn nhanh thí sinh THPT Mường Lầm -->
+            <div class="rounded-xl bg-blue-50/80 border border-blue-200 p-3.5 space-y-1.5">
+              <label class="block text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-1.5">
+                <span>⚡</span> Chọn Nhanh Thí Sinh THPT Mường Lầm (56 Học Sinh)
+              </label>
+              <select id="reg-quick-select" onchange="app.handleQuickStudentSelect(this)"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 focus:ring-2 focus:ring-blue-500 bg-white text-slate-800 text-xs font-semibold shadow-sm">
+                <option value="">-- Bấm vào đây để chọn nhanh học sinh THPT Mường Lầm --</option>
+              </select>
+              <p class="text-[11px] text-blue-700">Chọn tên học sinh để hệ thống tự điền thông tin lớp và trường, hoặc tự nhập bên dưới.</p>
+            </div>
+
+            <!-- Họ và tên -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Họ và Tên Thí Sinh <span class="text-red-500">*</span>
+              </label>
+              <input type="text" id="reg-fullname" required placeholder="Ví dụ: Lò Anh Minh"
+                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 text-sm font-medium transition-all shadow-sm">
+            </div>
+
+            <!-- Trường THPT -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Trường THPT <span class="text-red-500">*</span>
+              </label>
+              <div class="space-y-2">
+                <select id="reg-school-select" onchange="app.handleSchoolSelectChange(this)"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 text-sm font-medium transition-all bg-white shadow-sm">
+                  <option value="THPT Mường Lầm" selected>Trường THPT Mường Lầm</option>
+                  <option value="THPT Sông Mã">Trường THPT Sông Mã</option>
+                  <option value="THPT Số 1 Sông Mã">Trường THPT Số 1 Sông Mã</option>
+                  <option value="THPT Số 2 Sông Mã">Trường THPT Số 2 Sông Mã</option>
+                  <option value="THPT Chuyên Sơn La">Trường THPT Chuyên Sơn La</option>
+                  <option value="other">Trường THPT khác (Tự nhập tên)...</option>
+                </select>
+
+                <input type="text" id="reg-school-custom" placeholder="Nhập tên trường THPT của bạn..."
+                  class="hidden w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 text-sm font-medium transition-all shadow-sm">
+              </div>
+            </div>
+
+            <!-- Khối & Lớp -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Khối Lớp <span class="text-red-500">*</span>
+                </label>
+                <select id="reg-grade" required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 text-sm font-medium transition-all bg-white shadow-sm">
+                  <option value="10">Khối 10</option>
+                  <option value="11" selected>Khối 11</option>
+                  <option value="12">Khối 12</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Lớp Sinh Hoạt <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="reg-class" required placeholder="VD: 11 Chuyên Anh 1 hoặc 11A2"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 text-sm font-medium transition-all shadow-sm">
+              </div>
+            </div>
+
+            <!-- Cam kết quy chế & Chống gian lận -->
+            <div class="rounded-xl bg-amber-50 border border-amber-200/80 p-4 space-y-2">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <div class="text-xs text-amber-900 leading-relaxed">
+                  <span class="font-bold">Lưu ý quy chế phòng thi:</span> Hệ thống giám sát tự động tính năng chống gian lận. Thí sinh không được chuyển tab hoặc rời màn hình thi quá 2 lần (hệ thống sẽ tự động nộp bài nếu vi phạm lần 3).
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+              class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white font-bold text-base shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+              <span>BẮT ĐẦU VÀO PHÒNG THI</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- LEADERBOARD WIDGET (RIGHT COLUMN - 5 COLS) -->
+        <div class="lg:col-span-5 bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-7 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl">🏆</span>
+              <div>
+                <h3 class="text-lg font-bold text-slate-800">Bảng Xếp Hạng</h3>
+                <p class="text-xs text-slate-500">Top thí sinh điểm cao nhất đợt thi</p>
+              </div>
+            </div>
+            <button onclick="app.loadLeaderboard()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Làm mới</span>
+            </button>
+          </div>
+
+          <!-- Leaderboard list container -->
+          <div id="home-leaderboard-list" class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: EXAM ROOM ==================== -->
+    <section id="view-exam" class="hidden space-y-6 animate-fadeIn">
+      
+      <!-- EXAM TOP BAR / MONITOR -->
+      <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 sticky top-20 z-30">
+        
+        <!-- Candidate Tag -->
+        <div class="flex items-center gap-3">
+          <img src="logo-doan.png" alt="Logo Đoàn" class="w-9 h-10 object-contain drop-shadow hidden sm:block flex-shrink-0">
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
+            <span id="exam-avatar-initials">HS</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="exam-student-name" class="font-bold text-slate-800 text-sm sm:text-base">Lò Anh Minh</span>
+              <span id="exam-student-class" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">11A1</span>
+            </div>
+            <div id="exam-student-school" class="text-xs text-slate-500 truncate max-w-[200px] sm:max-w-xs">THPT Mường Lầm</div>
+          </div>
+        </div>
+
+        <!-- Timer & Controls -->
+        <div class="flex items-center gap-3 sm:gap-4 ml-auto">
+          
+          <!-- Fullscreen Button -->
+          <button onclick="app.toggleFullScreen()" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors" title="Toàn màn hình">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          </button>
+
+          <!-- Countdown Timer -->
+          <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div>
+              <div class="text-[10px] text-slate-500 font-bold uppercase tracking-wider leading-none">Thời Gian</div>
+              <div id="exam-timer" class="text-base sm:text-lg font-mono font-bold leading-tight">15:00</div>
+            </div>
+          </div>
+
+          <!-- Early Submit Button -->
+          <button onclick="app.promptSubmitExam()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Nộp Bài</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- EXAM MAIN LAYOUT: QUESTION AREA & PALETTE -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- QUESTION CARD (8 COLS) -->
+        <div class="lg:col-span-8 bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-8 space-y-6">
+          
+          <!-- Category & Question Number -->
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <span id="q-part-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Phần 1: Tiếng Anh giao tiếp A1–A2</span>
+              <span id="q-category-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600">Giao tiếp hàng ngày</span>
+            </div>
+            
+            <button id="btn-flag-review" onclick="app.toggleFlagCurrentQuestion()" class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 transition-colors">
+              <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              <span id="flag-btn-text">Đánh dấu xem lại</span>
+            </button>
+          </div>
+
+          <!-- Question Content -->
+          <div class="space-y-3">
+            <div class="text-xs font-bold text-blue-600 uppercase tracking-wider">
+              Câu hỏi <span id="q-current-index">1</span> / 20
+            </div>
+            <div id="q-content-text" class="text-base sm:text-lg font-medium text-slate-800 leading-relaxed min-h-[60px]">
+              Đang tải câu hỏi...
+            </div>
+          </div>
+
+          <!-- Options Grid -->
+          <div id="q-options-container" class="space-y-3 pt-2">
+            <!-- Rendered dynamically via JS -->
+          </div>
+
+          <!-- Question Navigation Buttons -->
+          <div class="flex items-center justify-between pt-6 border-t border-slate-100">
+            <button id="btn-prev-q" onclick="app.prevQuestion()" class="px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition-all flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              <span>Câu Trước</span>
+            </button>
+
+            <div class="text-xs text-slate-400 font-medium hidden sm:block">
+              Sử dụng các số bên phải để chuyển câu nhanh
+            </div>
+
+            <button id="btn-next-q" onclick="app.nextQuestion()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm shadow transition-all flex items-center gap-1.5">
+              <span>Câu Tiếp Theo</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- PALETTE & PROGRESS (4 COLS) -->
+        <div class="lg:col-span-4 space-y-6">
+          
+          <!-- Progress Box -->
+          <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-5 sm:p-6 space-y-4">
+            <div>
+              <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-2">
+                <span>Tiến Độ Làm Bài</span>
+                <span id="exam-progress-percent" class="text-blue-600 font-extrabold">0%</span>
+              </div>
+              <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div id="exam-progress-bar" class="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-300 w-0"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
+                <span>Đã làm: <strong id="exam-answered-count" class="text-slate-800">0</strong> / 20 câu</span>
+                <span>Còn lại: <strong id="exam-remaining-count" class="text-slate-800">20</strong> câu</span>
+              </div>
+            </div>
+
+            <!-- Question Numbers Palette Matrix -->
+            <div>
+              <div class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
+                Bảng Câu Hỏi (20 Câu)
+              </div>
+              <div id="exam-palette-grid" class="grid grid-cols-5 gap-2">
+                <!-- 20 buttons rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Palette Legend -->
+            <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-[11px] text-slate-600">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded bg-emerald-500 inline-block"></span>
+                <span>Đã trả lời</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded bg-slate-200 inline-block"></span>
+                <span>Chưa làm</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded bg-amber-100 border border-amber-400 inline-block"></span>
+                <span>Đánh dấu xem lại</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded bg-blue-100 border-2 border-blue-600 inline-block"></span>
+                <span>Đang chọn</span>
+              </div>
+            </div>
+
+            <!-- Anti-cheat violation count monitor -->
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-3 text-xs flex items-center justify-between">
+              <span class="text-slate-600">Cảnh báo rời tab:</span>
+              <span id="exam-violation-badge" class="font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">0 / 2 lần</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: RESULT & E-CERTIFICATE ==================== -->
+    <section id="view-result" class="hidden space-y-8 animate-fadeIn">
+      
+      <!-- RESULT SUMMARY BANNER -->
+      <div class="bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden text-center border border-blue-700/40">
+        <div class="max-w-2xl mx-auto space-y-4 relative z-10">
+          <div class="flex items-center justify-center gap-2.5">
+            <img src="logo-doan.png" alt="Logo Đoàn" class="w-10 h-11 object-contain drop-shadow">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-bold uppercase tracking-wider">
+              🎉 Hoàn Thành Bài Thi Xuất Sắc
+            </div>
+          </div>
+
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-white">
+            Chúc Mừng Thí Sinh <br>
+            <span id="result-candidate-name" class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400">Lò Anh Minh</span>
+          </h2>
+          
+          <p id="result-candidate-info" class="text-xs sm:text-sm text-slate-300">
+            Lớp 11A1 - THPT Mường Lầm
+          </p>
+
+          <!-- Score Card Big Display -->
+          <div class="py-4 flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+            <div>
+              <div class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Điểm Số Đạt Được</div>
+              <div class="text-5xl sm:text-6xl font-black text-amber-400 tracking-tight">
+                <span id="result-score">95</span><span class="text-2xl text-slate-400 font-bold">/100</span>
+              </div>
+            </div>
+
+            <div class="h-12 w-px bg-white/20 hidden sm:block"></div>
+
+            <div>
+              <div class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Thời Gian Hoàn Thành</div>
+              <div id="result-duration" class="text-3xl sm:text-4xl font-mono font-bold text-white tracking-tight">
+                08:32
+              </div>
+            </div>
+
+            <div class="h-12 w-px bg-white/20 hidden sm:block"></div>
+
+            <div>
+              <div class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Danh Hiệu Vinh Danh</div>
+              <div id="result-title-badge" class="mt-1 text-sm sm:text-base font-extrabold bg-amber-500 text-slate-950 px-4 py-1.5 rounded-full shadow-lg">
+                Đại sứ Hội nhập Xuất sắc 🏆
+              </div>
+            </div>
+          </div>
+
+          <!-- Breakdown scores -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
+            <div class="bg-white/10 rounded-xl p-2.5 border border-white/10">
+              <div class="text-slate-300">Phần 1: Tiếng Anh</div>
+              <div id="result-part1-score" class="font-bold text-white text-sm">11/12 câu (55đ)</div>
+            </div>
+            <div class="bg-white/10 rounded-xl p-2.5 border border-white/10">
+              <div class="text-slate-300">Phần 2: Hội nhập quốc tế</div>
+              <div id="result-part2-score" class="font-bold text-white text-sm">8/8 câu (40đ)</div>
+            </div>
+            <div class="col-span-2 sm:col-span-1 bg-white/10 rounded-xl p-2.5 border border-white/10">
+              <div class="text-slate-300">Kỷ luật phòng thi</div>
+              <div id="result-warnings-score" class="font-bold text-emerald-300 text-sm">0 vi phạm (Chuẩn mực)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- E-CERTIFICATE GENERATOR SECTION -->
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200/80 p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <div class="inline-flex items-center gap-1 text-amber-600 font-bold text-xs uppercase tracking-wider">
+              <span>★</span> GIẤY CHỨNG NHẬN ĐIỆN TỬ CHÍNH THỨC
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">E-Certificate of Achievement</h3>
+            <p class="text-xs text-slate-500">Giấy chứng nhận mang dấu ấn Đoàn Thanh niên, sẵn sàng tải ảnh PNG sắc nét để chia sẻ</p>
+          </div>
+
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button onclick="app.downloadCertificatePNG()" class="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 transform hover:scale-105 active:scale-95">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>TẢI ẢNH CHỨNG NHẬN (PNG)</span>
+            </button>
+            <button onclick="app.shareResult()" class="px-4 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm transition-colors flex items-center gap-1.5" title="Sao chép liên kết chia sẻ">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+              <span>Chia Sẻ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Certificate Switcher -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-blue-50/70 border border-blue-200/80 p-3.5 rounded-2xl">
+          <div class="flex items-center gap-2">
+            <span class="text-base">🎓</span>
+            <div>
+              <span class="text-xs font-bold text-blue-900 block">Xem & In Giấy Chứng Nhận Của Thí Sinh THPT Mường Lầm:</span>
+              <span class="text-[11px] text-blue-700">Chọn bất kỳ học sinh nào trong danh sách 56 em để xem chứng nhận và tải file ảnh PNG sắc nét</span>
+            </div>
+          </div>
+          <select id="cert-student-select" onchange="app.switchCertificateStudent(this.value)"
+            class="w-full sm:w-auto text-xs font-bold px-3.5 py-2.5 rounded-xl border border-blue-300 bg-white text-blue-900 shadow-sm focus:ring-2 focus:ring-blue-500">
+            <option value="">-- Đổi sang chứng nhận của thí sinh khác --</option>
+          </select>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="flex justify-center bg-slate-100/70 p-3 sm:p-6 rounded-2xl border border-slate-200 overflow-hidden">
+          <canvas id="cert-canvas" width="2000" height="1414" class="certificate-preview-container max-w-full h-auto rounded-lg shadow-2xl bg-white"></canvas>
+        </div>
+      </div>
+
+      <!-- DETAILED ANSWERS REVIEW SECTION -->
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200/80 p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">Xem Lại Đáp Án & Giải Thích Chi Tiết</h3>
+            <p class="text-xs text-slate-500">Đối chiếu bài làm của bạn với đáp án chuẩn và phân tích kiến thức tiếng Việt</p>
+          </div>
+
+          <!-- Review Filters -->
+          <div class="flex items-center gap-2">
+            <button onclick="app.filterReview('all')" id="rf-all" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white">Tất cả (20)</button>
+            <button onclick="app.filterReview('wrong')" id="rf-wrong" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">Chỉ câu sai</button>
+            <button onclick="app.filterReview('part1')" id="rf-part1" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">Phần 1</button>
+            <button onclick="app.filterReview('part2')" id="rf-part2" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">Phần 2</button>
+          </div>
+        </div>
+
+        <!-- Review Question List -->
+        <div id="review-list-container" class="space-y-4">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-6 border-t border-slate-100">
+          <button onclick="app.startExamFlow()" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow transition-all flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>Thi Lại Lượt Mới</span>
+          </button>
+          
+          <button onclick="app.navigate('home')" class="px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm transition-colors">
+            Về Trang Chủ
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: ADMIN / ORGANIZING COMMITTEE ==================== -->
+    <section id="view-admin" class="hidden space-y-8 animate-fadeIn">
+      
+      <!-- Admin Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+        <div class="flex items-center gap-4">
+          <img src="logo-doan.png" alt="Huy hiệu Đoàn TNCS Hồ Chí Minh" class="w-12 h-14 object-contain drop-shadow flex-shrink-0">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-blue-600"></span> Đoàn TNCS Hồ Chí Minh Xã Mường Lầm - Ban Tổ Chức
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800">Trang Quản Trị & Báo Cáo Tổng Hợp</h2>
+            <p class="text-xs text-slate-500">Theo dõi số liệu thời gian thực, quản lý ngân hàng câu hỏi và xuất báo cáo kết quả</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="app.exportExcelCSV()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow flex items-center gap-1.5 transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Xuất Báo Cáo Excel (.CSV)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI METRIC CARDS -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl shadow border border-slate-200/80">
+          <div class="text-xs font-semibold text-slate-500">Tổng Lượt Thi</div>
+          <div id="admin-kpi-total" class="text-2xl sm:text-3xl font-extrabold text-blue-700 mt-1">10</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Thí sinh đã hoàn thành</div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl shadow border border-slate-200/80">
+          <div class="text-xs font-semibold text-slate-500">Điểm Trung Bình</div>
+          <div id="admin-kpi-avg" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1">84.0</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Thang điểm 100</div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl shadow border border-slate-200/80">
+          <div class="text-xs font-semibold text-slate-500">Điểm Cao Nhất</div>
+          <div id="admin-kpi-max" class="text-2xl sm:text-3xl font-extrabold text-amber-500 mt-1">100</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Thí sinh xuất sắc nhất</div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl shadow border border-slate-200/80">
+          <div class="text-xs font-semibold text-slate-500">Tỷ Lệ Giỏi / Xuất Sắc</div>
+          <div id="admin-kpi-excellent" class="text-2xl sm:text-3xl font-extrabold text-indigo-600 mt-1">80%</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Điểm từ 75 trở lên</div>
+        </div>
+      </div>
+
+      <!-- SCORE DISTRIBUTION VISUALIZATION -->
+      <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Phổ Điểm Thí Sinh Toàn Đoàn</h3>
+          <span class="text-xs text-slate-500">Tự động tính theo danh sách dự thi</span>
+        </div>
+        <div id="admin-distribution-bars" class="space-y-3">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- CANDIDATE LIST WITH FILTERS -->
+      <div class="bg-white rounded-2xl shadow border border-slate-200 overflow-hidden space-y-4 p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <h3 class="text-lg font-bold text-slate-800">Danh Sách Thí Sinh Dự Thi</h3>
+          <div class="text-xs text-slate-500">Hiển thị <strong id="admin-filter-count">10</strong> thí sinh</div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Lọc theo Trường THPT</label>
+            <select id="admin-filter-school" onchange="app.renderAdminSubmissions()" class="w-full text-xs font-medium px-3 py-2 rounded-xl border border-slate-300 bg-white">
+              <option value="all">Tất cả các trường</option>
+              <!-- Populated via JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Lọc theo Khối</label>
+            <select id="admin-filter-grade" onchange="app.renderAdminSubmissions()" class="w-full text-xs font-medium px-3 py-2 rounded-xl border border-slate-300 bg-white">
+              <option value="all">Tất cả các khối (10, 11, 12)</option>
+              <option value="10">Khối 10</option>
+              <option value="11">Khối 11</option>
+              <option value="12">Khối 12</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Tìm kiếm thí sinh</label>
+            <input type="text" id="admin-search-text" oninput="app.renderAdminSubmissions()" placeholder="Nhập tên hoặc SBD..." class="w-full text-xs font-medium px-3 py-2 rounded-xl border border-slate-300">
+          </div>
+        </div>
+
+        <!-- Submissions Table -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-3">SBD</th>
+                <th class="py-3 px-4">Họ và Tên</th>
+                <th class="py-3 px-4">Trường THPT</th>
+                <th class="py-3 px-3">Lớp</th>
+                <th class="py-3 px-3 text-center">Điểm</th>
+                <th class="py-3 px-3 text-center">Thời Gian</th>
+                <th class="py-3 px-3 text-center">Cảnh Báo</th>
+                <th class="py-3 px-4">Danh Hiệu</th>
+                <th class="py-3 px-3">Thời Điểm Nộp</th>
+              </tr>
+            </thead>
+            <tbody id="admin-submissions-tbody" class="divide-y divide-slate-100">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- QUESTION BANK MANAGER -->
+      <div class="bg-white rounded-2xl shadow border border-slate-200 p-5 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">Quản Lý Ngân Hàng Câu Hỏi</h3>
+            <p class="text-xs text-slate-500">Xem, thêm, sửa, xóa các câu hỏi trắc nghiệm A1–A2 và kiến thức Hội nhập</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="app.openAddQuestionModal()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow flex items-center gap-1.5 transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Thêm Câu Hỏi Mới</span>
+            </button>
+            <button onclick="app.resetDefaultQuestions()" class="px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-600 font-semibold text-xs" title="Khôi phục lại 30 câu hỏi chuẩn ban đầu">
+              Khôi phục 30 câu gốc
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Bank Filter -->
+        <div class="flex items-center gap-2">
+          <button onclick="app.filterAdminQuestions('all')" id="qf-all" class="admin-q-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white">Tất cả (<span id="admin-q-count-all">30</span>)</button>
+          <button onclick="app.filterAdminQuestions('part1')" id="qf-part1" class="admin-q-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">Phần 1: Tiếng Anh A1-A2 (<span id="admin-q-count-p1">18</span>)</button>
+          <button onclick="app.filterAdminQuestions('part2')" id="qf-part2" class="admin-q-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">Phần 2: Hội nhập ASEAN (<span id="admin-q-count-p2">12</span>)</button>
+        </div>
+
+        <!-- Questions List Container -->
+        <div id="admin-questions-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALS & POPUPS ==================== -->
+
+  <!-- 1. ANTI-CHEAT WARNING MODAL (Tabs switch detection) -->
+  <div id="modal-anti-cheat" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 modal-backdrop hidden animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-red-500 text-center space-y-5 transform transition-all scale-100">
+      
+      <!-- Warning Icon with pulse -->
+      <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center animate-bounce">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      </div>
+
+      <div class="space-y-2">
+        <div class="text-xs font-extrabold uppercase tracking-widest text-red-600">CẢNH BÁO VI PHẠM QUY CHẾ THI</div>
+        <h4 id="ac-modal-title" class="text-xl font-bold text-slate-900">Phát Hiện Rời Khỏi Màn Hình Làm Bài!</h4>
+        <p id="ac-modal-message" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          Bạn vừa chuyển sang tab khác hoặc thoát khỏi giao diện thi. Hành vi này đã được ghi nhận vào nhật ký giám sát.
+        </p>
+      </div>
+
+      <div class="bg-red-50 border border-red-200 rounded-2xl p-4">
+        <div class="text-xs text-red-800 font-semibold">
+          Số lần vi phạm: <strong id="ac-violation-count" class="text-base text-red-600">1 / 2</strong>
+        </div>
+        <div id="ac-warning-subtext" class="text-[11px] text-red-600 mt-1">
+          Lưu ý: Nếu vi phạm lần thứ 3, hệ thống sẽ TỰ ĐỘNG NỘP BÀI ngay lập tức!
+        </div>
+      </div>
+
+      <button onclick="app.dismissAntiCheatModal()" class="w-full py-3.5 px-6 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-lg shadow-red-600/30 transition-all">
+        TÔI ĐÃ HIỂU VÀ TIẾP TỤC LÀM BÀI
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. CONFIRM SUBMIT MODAL -->
+  <div id="modal-confirm-submit" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 modal-backdrop hidden animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 text-center space-y-5">
+      <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-600 mx-auto flex items-center justify-center">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+
+      <div>
+        <h4 class="text-xl font-bold text-slate-900">Xác Nhận Nộp Bài Thi?</h4>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">Sau khi nộp bài, bạn sẽ không thể thay đổi các câu trả lời.</p>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-1.5 text-left">
+        <div class="flex justify-between">
+          <span class="text-slate-600">Tổng số câu hỏi:</span>
+          <strong class="text-slate-900">20 câu</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-600">Đã trả lời:</span>
+          <strong id="confirm-answered-count" class="text-emerald-600 font-bold">18 câu</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-600">Chưa trả lời:</span>
+          <strong id="confirm-unanswered-count" class="text-red-500 font-bold">2 câu</strong>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="app.closeSubmitModal()" class="flex-1 py-3 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm transition-colors">
+          Tiếp Tục Làm
+        </button>
+        <button onclick="app.executeSubmitExam()" class="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-600/25 transition-all">
+          Xác Nhận Nộp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ADD / EDIT QUESTION MODAL -->
+  <div id="modal-question-editor" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 modal-backdrop hidden animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h4 id="qe-modal-title" class="text-lg font-bold text-slate-800">Thêm Câu Hỏi Mới</h4>
+        <button onclick="app.closeQuestionModal()" class="text-slate-400 hover:text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-question-editor" onsubmit="app.handleSaveQuestion(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="qe-id">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Phần Thi</label>
+            <select id="qe-part" class="w-full p-2.5 rounded-xl border border-slate-300">
+              <option value="1">Phần 1: Tiếng Anh giao tiếp A1-A2</option>
+              <option value="2">Phần 2: Hội nhập quốc tế & ASEAN</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Chủ Đề (Category)</label>
+            <input type="text" id="qe-category" placeholder="VD: Giao tiếp hàng ngày, Thủ đô ASEAN..." class="w-full p-2.5 rounded-xl border border-slate-300">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nội Dung Câu Hỏi</label>
+          <textarea id="qe-question" required rows="3" placeholder="Nhập câu hỏi tiếng Anh hoặc tiếng Việt..." class="w-full p-2.5 rounded-xl border border-slate-300 font-medium"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-700">Các Lựa Chọn Đáp Án (A, B, C, D)</label>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 text-center">A.</span>
+            <input type="text" id="qe-opt-0" required class="flex-1 p-2 rounded-xl border border-slate-300" placeholder="Đáp án A">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 text-center">B.</span>
+            <input type="text" id="qe-opt-1" required class="flex-1 p-2 rounded-xl border border-slate-300" placeholder="Đáp án B">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 text-center">C.</span>
+            <input type="text" id="qe-opt-2" required class="flex-1 p-2 rounded-xl border border-slate-300" placeholder="Đáp án C">
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 font-bold text-slate-500 text-center">D.</span>
+            <input type="text" id="qe-opt-3" required class="flex-1 p-2 rounded-xl border border-slate-300" placeholder="Đáp án D">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Đáp Án Đúng</label>
+          <select id="qe-correct" class="w-full p-2.5 rounded-xl border border-slate-300 font-bold text-emerald-700">
+            <option value="0">Phương án A</option>
+            <option value="1">Phương án B</option>
+            <option value="2">Phương án C</option>
+            <option value="3">Phương án D</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Giải Thích Chi Tiết (Bằng Tiếng Việt)</label>
+          <textarea id="qe-explanation" rows="2" placeholder="Giải thích ngắn gọn, dễ hiểu để thí sinh ôn tập kiến thức..." class="w-full p-2.5 rounded-xl border border-slate-300"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="app.closeQuestionModal()" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-600 font-bold">Hủy</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold">Lưu Câu Hỏi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <div class="font-bold text-slate-300 tracking-wider">CUỘC THI TRỰC TUYẾN TIẾNG ANH & HỘI NHẬP QUỐC TẾ DÀNH CHO HỌC SINH THPT</div>
+      <div>Đơn vị chủ trì: Đoàn TNCS Hồ Chí Minh Xã Mường Lầm - Ban Chấp hành Đoàn Xã</div>
+      <div class="text-slate-500">© 2026 Bản quyền thuộc về Ban Tổ Chức Cuộc Thi. Nền tảng đánh giá năng lực ngoại ngữ & kỹ năng hội nhập quốc tế.</div>
+    </div>
+  </footer>
+
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
